@@ -1,0 +1,6 @@
+A certain mobile phone company charges its customers using per second billing. 
+The tariff used is post paid. The following rules are used in the billing procedure.
+(a)	Any call made after 6.00 a.m. to 6.00 p.m. is charged Kshs 4.00 per minute.
+(b)	Any call made after 6.00 p.m. to 6.00 a.m. is charged Kshs 3.00 per minute.
+(c)	Any call to another network is charged Kshs 5.00 irrespective of the time.
+(d)	In addition to the above charges one also pays 16% Vat for calls taking longer than two minutes.
