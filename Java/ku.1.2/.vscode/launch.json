@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Call",
+            "request": "launch",
+            "mainClass": "OOP.updated_billing.Call",
+            "projectName": "ku.1.2_88b73289"
+        },
+        {
+            "type": "java",
+            "name": "Call",
+            "request": "launch",
+            "mainClass": "Call",
+            "projectName": "ku.1.2_88b73289"
+        },
+        {
             "type": "jdk",
             "request": "launch",
             "name": "Launch Java App"
