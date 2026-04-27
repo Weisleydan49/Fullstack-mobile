@@ -1,15 +1,15 @@
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * Call class implements a premium Mobile Call Billing System GUI.
  * It allows users to select a network, start a call, and calculate charges upon ending.
+ * tHE CHARGES ARE CALCULATED PER MINUTE
  */
 public class Call extends JFrame implements ActionListener {
     // UI Components
