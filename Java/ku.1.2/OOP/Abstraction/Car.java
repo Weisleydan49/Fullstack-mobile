@@ -1,32 +1,31 @@
-import javax.swing.*;
-
 abstract class Cars {
     // properties / attributes
     int yearOfProduction;
     String colour;
 
-    // Abstract nethod(has no doby)
-    public void stop() {
-
+    // Abstract method (has no body)
+    public void stop(int yearOfProduction, String colour) {
+        yearOfProduction = 2022;
+        colour = "Charcoal grey";
     }
 
     // concrete method
     public void start() {
-        JOptionPane.showMessageDialog(null, "Car is sarting");
+        System.out.println("Car is starting");
     }
 }
 
 class Mercedes extends Cars {
     @Override
     public void stop() {
-        JOptionPane.showMessageDialog(null, "Merceds has stopped!!");
+        System.out.println("Mercedes has stopped!!");
     }
 }
 
 class Bima extends Cars {
     @Override
     public void start() {
-        JOptionPane.showMessageDialog(null, "BMW has started");
+        System.out.println("BMW has started");
     }
 }
 
@@ -39,5 +38,4 @@ public class Car {
         Benz.start();
         Benz.stop();
     }
-
 }
