@@ -1,0 +1,7 @@
+A shop sells the following:
+1. Sugar @ ksh 150 per kg
+2. Tea leaves @ ksh 50 per packet
+3. Rive @ ksh 100 per kg
+4. Unga @ ksh 140 per packet
+
+Write a GUI java program that can be used by the shopkeeper
