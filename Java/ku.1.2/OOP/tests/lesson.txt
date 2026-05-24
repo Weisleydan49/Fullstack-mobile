@@ -1,0 +1,276 @@
+import java.util.Scanner;
+
+public class MultiplicationTable {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a positive integer: ");
+        int num = sc.nextInt();
+
+        System.out.println("Multiplication Table of " + num + ":");
+        for (int i = 1; i <= 10; i++) {
+            System.out.println(num + " x " + i + " = " + (num * i));
+        }
+
+        sc.close();
+    }
+}
+
+
+
+
+
+import java.util.Scanner;
+
+public class Factorial {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a number: ");
+        int num = sc.nextInt();
+
+        if (num < 0) {
+            System.out.println("Factorial is not defined for negative numbers.");
+        } else {
+            long factorial = 1;
+            for (int i = 1; i <= num; i++) {
+                factorial *= i;
+            }
+            System.out.println("Factorial of " + num + " is: " + factorial);
+        }
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class Power {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter base: ");
+        int base = sc.nextInt();
+        System.out.print("Enter exponent: ");
+        int exp = sc.nextInt();
+
+        long result = 1;
+        boolean isNegativeExp = false;
+
+        if (exp < 0) {
+            isNegativeExp = true;
+            exp = -exp;  // Make exponent positive for calculation
+        }
+
+        for (int i = 1; i <= exp; i++) {
+            result *= base;
+        }
+
+        if (isNegativeExp) {
+            System.out.println(base + " raised to " + (-exp) + " = 1/" + result);
+        } else {
+            System.out.println(base + " raised to " + exp + " = " + result);
+        }
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class ReverseNumber {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter an integer: ");
+        int num = sc.nextInt();
+        int original = num;
+        int reverse = 0;
+
+        while (num != 0) {
+            int digit = num % 10;
+            reverse = reverse * 10 + digit;
+            num = num / 10;
+        }
+
+        System.out.println("Reversed number of " + original + " is: " + reverse);
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class SumEvenOdd {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        int evenSum = 0, oddSum = 0;
+        char choice;
+
+        System.out.println("Enter numbers (enter 0 to stop):");
+
+        do {
+            int num = sc.nextInt();
+            if (num == 0) break;
+
+            if (num % 2 == 0) {
+                evenSum += num;
+            } else {
+                oddSum += num;
+            }
+
+            System.out.print("Do you want to enter more? (y/n): ");
+            choice = sc.next().charAt(0);
+        } while (choice == 'y' || choice == 'Y');
+
+        System.out.println("Sum of Even numbers: " + evenSum);
+        System.out.println("Sum of Odd numbers: " + oddSum);
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+import java.util.Scanner;
+
+public class PrimeNumber {
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.print("Enter a positive integer: ");
+        int num = sc.nextInt();
+
+        if (num <= 1) {
+            System.out.println(num + " is not a prime number.");
+        } else {
+            boolean isPrime = true;
+            for (int i = 2; i <= Math.sqrt(num); i++) {
+                if (num % i == 0) {
+                    isPrime = false;
+                    break;
+                }
+            }
+            if (isPrime) {
+                System.out.println(num + " is a prime number.");
+            } else {
+                System.out.println(num + " is not a prime number.");
+            }
+        }
+
+        sc.close();
+    }
+}
+
+
+
+
+
+
+
+
+
+
+Vimport java.util.Scanner;
+
+ public class AddNumbers {
+     public static void main(String[] args) {
+         Scanner sc = new Scanner(System.in);
+         char choice;
+
+         do {
+             System.out.print("Enter first number: ");
+             int a = sc.nextInt();
+             System.out.print("Enter second number: ");
+             int b = sc.nextInt();
+
+             System.out.println("Sum = " + (a + b));
+
+             System.out.print("Do you want to perform again? (y/n): ");
+             choice = sc.next().charAt(0);
+
+         } while (choice == 'y' || choice == 'Y');
+
+         System.out.println("Program terminated.");
+         sc.close();
+     }
+ }
+
+
+
+
+
+
+
+
+
+
+ import java.util.Scanner;
+
+ public class CountNumbers {
+     public static void main(String[] args) {
+         Scanner sc = new Scanner(System.in);
+
+         int positive = 0, negative = 0, zero = 0;
+         char choice;
+
+         System.out.println("Enter numbers (type 'n' to stop):");
+
+         do {
+             int num = sc.nextInt();
+
+             if (num > 0) positive++;
+             else if (num < 0) negative++;
+             else zero++;
+
+             System.out.print("Do you want to enter more? (y/n): ");
+             choice = sc.next().charAt(0);
+
+         } while (choice == 'y' || choice == 'Y');
+
+         System.out.println("\nResults:");
+         System.out.println("Positive numbers: " + positive);
+         System.out.println("Negative numbers: " + negative);
+         System.out.println("Zeros: " + zero);
+
+         sc.close();
+     }
+ }
+
+
+
+
+
+
+
+
+
+
+
