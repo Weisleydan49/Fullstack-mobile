@@ -3,25 +3,25 @@ package OOP.updated_billing;
 
 // Import all AWT classes for graphics, colors, fonts, layouts, and dimensions
 import java.awt.*;
-// Import ActionEvent — the object passed to actionPerformed() when a button is clicked
+// Import ActionEvent - the object passed to actionPerformed() when a button is clicked
 import java.awt.event.ActionEvent;
-// Import ActionListener — the interface that allows this class to respond to button clicks
+// Import ActionListener - the interface that allows this class to respond to button clicks
 import java.awt.event.ActionListener;
-// Import LocalDateTime — stores both date AND time (used to record when a call started)
+// Import LocalDateTime - stores both date and time (used to record when a call started)
 import java.time.LocalDateTime;
-// Import LocalTime — stores only the time (used to determine daytime/nighttime billing rate)
+// Import LocalTime - stores only the time (used to determine daytime/nighttime billing rate)
 import java.time.LocalTime;
-// Import DateTimeFormatter — used to format date/time objects into human-readable strings
+// Import DateTimeFormatter - used to format date/time objects into human-readable strings
 import java.time.format.DateTimeFormatter;
-// Import ArrayList — a resizable list used to store the call history
+// Import ArrayList - a resizable list used to store the call history
 import java.util.ArrayList;
-// Import List — the interface type used to declare the callHistory list (good practice)
+// Import List - the interface type used to declare the callHistory list (good practice)
 import java.util.List;
 // Import all Swing components (JFrame, JButton, JLabel, JTable, JScrollPane, etc.)
 import javax.swing.*;
-// Import EmptyBorder — used to add padding (empty space) around the main panel
+// Import EmptyBorder - used to add padding (empty space) around the main panel
 import javax.swing.border.EmptyBorder;
-// Import DefaultTableModel — manages the data (rows and columns) displayed in the JTable
+// Import DefaultTableModel - manages the data (rows and columns) displayed in the JTable
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 // implements ActionListener → this class handles its own button click events
 public class Call extends JFrame implements ActionListener {
 
-    // ─── UI Components ─────────────────────────────────────────────────────────
+    // UI Components 
     // Four action buttons: select network, start/end call, and reset everything
     private JButton selectNetworkBtn, startCallBtn, endCallBtn, resetBtn;
     // Labels to display live time, call duration, current status, and total charges
@@ -44,17 +44,17 @@ public class Call extends JFrame implements ActionListener {
     // The data model that feeds rows/columns into the JTable
     private DefaultTableModel tableModel;
 
-    // ─── Timers ────────────────────────────────────────────────────────────────
+    //  Timers 
     // clockTimer: fires every second to update the live clock display
     // durationTimer: fires every second during a call to count elapsed seconds
     private javax.swing.Timer clockTimer, durationTimer;
 
-    // ─── Call State Variables ──────────────────────────────────────────────────
+    // Call State Variables
     // Counts how many seconds the current call has been active
     private int durationSeconds = 0;
     // True once the user has selected a network (unlocks the Start Call button)
     private boolean networkSelected = false;
-    // True if the user selected "Other Network (Off-net)" — affects billing rate
+    // True if the user selected "Other Network (Off-net)" - affects billing rate
     private boolean isOtherNetwork = false;
     // Stores the name of the selected network (e.g., "Same Network (On-net)")
     private String currentNetwork = "";
@@ -62,12 +62,12 @@ public class Call extends JFrame implements ActionListener {
     // CallRecord)
     private LocalDateTime callStartTime;
 
-    // ─── History ───────────────────────────────────────────────────────────────
+    // History 
     // A dynamic list that grows as calls are completed; each entry is a CallRecord
     // object
     private List<CallRecord> callHistory = new ArrayList<>();
 
-    // ─── Constructor ───────────────────────────────────────────────────────────
+    //  Constructor
     public Call() {
         // Set the window title bar text
         setTitle("Almond's Mobile Billing System - Improved");
@@ -78,7 +78,7 @@ public class Call extends JFrame implements ActionListener {
         // Center the window on the screen (null = relative to nothing = screen center)
         setLocationRelativeTo(null);
 
-        // Create the main panel using GridBagLayout — a flexible grid that lets us
+        // Create the main panel using GridBagLayout - a flexible grid that lets us
         // control exactly where each component sits using GridBagConstraints
         JPanel mainPanel = new JPanel(new GridBagLayout());
         // Add 20px of padding on all four sides so components don't touch the window
@@ -89,47 +89,46 @@ public class Call extends JFrame implements ActionListener {
         // Add the main panel into the JFrame window
         add(mainPanel);
 
-        // GridBagConstraints (gbc) controls placement rules for each component added to
-        // mainPanel
+        // GridBagConstraints controls placement rules for each component added to mainPanel
         GridBagConstraints gbc = new GridBagConstraints();
-        // HORIZONTAL: let components stretch left-to-right to fill the column width
+        // Let components stretch left-to-right to fill the column width
         gbc.fill = GridBagConstraints.HORIZONTAL;
         // Add 10px of space (margin) around every component on all four sides
         gbc.insets = new Insets(10, 10, 10, 10);
         // Place all components in column 0 (the only column)
         gbc.gridx = 0;
 
-        // ── Row 0: Live Clock Label ──────────────────────────────────────────
+        // Row 0: Live Clock Label
         timeLabel = new JLabel("Time: --:--:--", SwingConstants.CENTER); // Default placeholder text, centered
         timeLabel.setFont(new Font("Segoe UI", Font.BOLD, 18)); // Bold, 18pt font
         timeLabel.setForeground(new Color(44, 62, 80)); // Dark blue-gray text color
         gbc.gridy = 0; // Place in the first row
         mainPanel.add(timeLabel, gbc);
 
-        // ── Row 1: Call Duration Label ───────────────────────────────────────
+        // Row 1: Call Duration Label
         durationLabel = new JLabel("Duration: 00:00", SwingConstants.CENTER); // Shows MM:SS of current call
         durationLabel.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         gbc.gridy = 1;
         mainPanel.add(durationLabel, gbc);
 
-        // ── Row 2: Status Label ───────────────────────────────────────────────
+        // Row 2: Status Label 
         statusLabel = new JLabel("Status: Please select a network", SwingConstants.CENTER); // Guides the user
         statusLabel.setFont(new Font("Segoe UI", Font.ITALIC, 14));
-        statusLabel.setForeground(new Color(127, 140, 141)); // Gray — neutral/idle color
+        statusLabel.setForeground(new Color(127, 140, 141)); // Gray - neutral/idle color
         gbc.gridy = 2;
         mainPanel.add(statusLabel, gbc);
 
-        // ── Row 3: Phone Number Input ─────────────────────────────────────────
+        // Row 3: Phone Number Input
         // A sub-panel using FlowLayout so the label and text field sit side by side
         JPanel dialPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        dialPanel.setOpaque(false); // Transparent — lets the parent panel's background show through
+        dialPanel.setOpaque(false); // Transparent - lets the parent panel's background show through
         dialPanel.add(new JLabel("Phone Number:")); // Static label next to the input box
         phoneNumberField = new JTextField(15); // Input box, 15 characters wide
         dialPanel.add(phoneNumberField);
         gbc.gridy = 3;
         mainPanel.add(dialPanel, gbc);
 
-        // ── Row 4: Action Buttons ─────────────────────────────────────────────
+        // Row 4: Action Buttons
         // GridLayout(1, 4, 8, 0) = 1 row, 4 columns, 8px horizontal gap, 0px vertical
         // gap
         JPanel buttonPanel = new JPanel(new GridLayout(1, 4, 8, 0));
@@ -141,7 +140,7 @@ public class Call extends JFrame implements ActionListener {
         endCallBtn = createStyledButton("End Call", new Color(231, 76, 60)); // Red
         resetBtn = createStyledButton("Reset All", new Color(149, 165, 166)); // Gray
 
-        // Disable Start/End buttons at launch — user must select a network first
+        // Disable Start/End buttons at launch - user must select a network first
         startCallBtn.setEnabled(false);
         endCallBtn.setEnabled(false);
 
@@ -154,14 +153,14 @@ public class Call extends JFrame implements ActionListener {
         gbc.gridy = 4;
         mainPanel.add(buttonPanel, gbc);
 
-        // ── Row 5: Charges Display Label ──────────────────────────────────────
+        // Row 5: Charges Display Label
         chargesLabel = new JLabel("Charges: KSH 0.00", SwingConstants.CENTER); // Updated after each call
         chargesLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
         chargesLabel.setForeground(new Color(41, 128, 185)); // Blue
         gbc.gridy = 5;
         mainPanel.add(chargesLabel, gbc);
 
-        // ── Row 6: Call History Table ──────────────────────────────────────────
+        // Row 6: Call History Table
         // Define the column headers for the table
         String[] columns = { "Start Time", "Duration", "Network", "Number", "Charges (KSH)" };
         // DefaultTableModel holds the actual data (rows added dynamically after each
@@ -231,6 +230,37 @@ public class Call extends JFrame implements ActionListener {
     }
 
     /**
+     * Validates if a phone number is a valid Kenyan number.
+     * Accepts formats:
+     * - 0712345678 (10 digits starting with 0)
+     * - +254712345678 (starts with +254, then 9 more digits)
+     * - Valid prefixes for mobile: 07, 01
+     */
+    private boolean isValidKenyanPhoneNumber(String number) {
+        if (number == null || number.isEmpty()) {
+            return false;
+        }
+
+        // Format 1: Starts with 0 (national format)
+        if (number.startsWith("0")) {
+            // Should be exactly 10 digits and start with 07 or 01
+            if (number.length() == 10 && number.matches("^0[17][0-9]{8}$")) {
+                return true;
+            }
+        }
+        // Format 2: Starts with +254 (international format)
+        else if (number.startsWith("+254")) {
+            // Should be +254 followed by 9 digits (which represents the 0 prefix)
+            // Total length = 13 characters
+            if (number.length() == 13 && number.matches("^\\+254[17][0-9]{8}$")) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Shows a dropdown dialog for the user to choose between On-net and Off-net.
      * Updates state and enables the Start Call button only after a selection is
      * made.
@@ -264,12 +294,15 @@ public class Call extends JFrame implements ActionListener {
         // Read and trim whitespace from the phone number field
         String number = phoneNumberField.getText().trim();
 
-        // Validation: do not allow a call without a phone number
-        if (number.isEmpty()) {
-            // 'this' = parent (dialog appears over the Call window, not floating on screen)
-            // JOptionPane.WARNING_MESSAGE = shows a yellow warning icon
-            JOptionPane.showMessageDialog(this, "Please enter a phone number!", "Warning", JOptionPane.WARNING_MESSAGE);
-            return; // Stop here — don't start the call
+        // Validation: check if the phone number is a valid Kenyan number
+        if (!isValidKenyanPhoneNumber(number)) {
+            JOptionPane.showMessageDialog(this, 
+                "Please enter a valid Kenyan phone number.\n\nAccepted formats:\n" +
+                "- 0712345678 (10 digits starting with 0)\n" +
+                "- +254712345678 (country code +254)", 
+                "Invalid Phone Number", 
+                JOptionPane.WARNING_MESSAGE);
+            return; // Stop here - don't start the call
         }
 
         callStartTime = LocalDateTime.now(); // Record the exact start time for the call record
@@ -296,7 +329,7 @@ public class Call extends JFrame implements ActionListener {
      * resets for the next call.
      */
     private void handleEndCall() {
-        // Null check — durationTimer might be null if end was called before start
+        // Null check - durationTimer might be null if end was called before start
         // (safety guard)
         if (durationTimer != null)
             durationTimer.stop(); // Freeze the duration counter
@@ -369,7 +402,7 @@ public class Call extends JFrame implements ActionListener {
      * Each cell value is formatted to be human-readable.
      */
     private void addToHistoryTable(CallRecord record) {
-        // addRow takes an Object[] — each element maps to one column in order
+        // addRow takes an Object[] - each element maps to one column in order
         tableModel.addRow(new Object[] {
                 record.getFormattedStart(), // "yyyy-MM-dd HH:mm:ss"
                 record.getFormattedDuration(), // "MM:SS"
@@ -392,7 +425,7 @@ public class Call extends JFrame implements ActionListener {
     }
 
     /**
-     * Full application reset — wipes everything including call history.
+     * Full application reset - wipes everything including call history.
      * Called when the user clicks "Reset All".
      */
     private void resetAll() {
@@ -408,9 +441,9 @@ public class Call extends JFrame implements ActionListener {
         networkSelected = false; // Reset the network selection flag
     }
 
-    // ─── Inner Class: CallRecord ────────────────────────────────────────────────
+    // Inner Class: CallRecord
     /**
-     * A simple data class (model) that stores information about one completed call.
+     * A simple data class that stores information about one completed call.
      * Declared 'static' because it doesn't need access to the outer Call class's
      * instance fields.
      * All fields are 'final' because a call record should never change after
@@ -423,7 +456,7 @@ public class Call extends JFrame implements ActionListener {
         private final double charges; // The calculated cost in KSH
         private final String phoneNumber; // The number that was dialed
 
-        // Constructor — all values are set once and cannot be changed (final)
+        // Constructor - all values are set once and cannot be changed (final)
         public CallRecord(LocalDateTime start, int dur, String net, double chg, String num) {
             this.startTime = start;
             this.durationSeconds = dur;
@@ -444,37 +477,33 @@ public class Call extends JFrame implements ActionListener {
             return String.format("%02d:%02d", min, sec);
         }
 
-        // Standard getter — returns the network type string
+        // Standard getter - returns the network type string
         public String getNetworkType() {
             return networkType;
         }
 
-        // Standard getter — returns the dialed phone number
+        // Standard getter - returns the dialed phone number
         public String getPhoneNumber() {
             return phoneNumber;
         }
 
-        // Standard getter — returns the charge amount
+        // Standard getter - returns the charge amount
         public double getCharges() {
             return charges;
         }
     }
 
-    // ─── Entry Point ────────────────────────────────────────────────────────────
+    // Entry Point
     public static void main(String[] args) {
-        // Apply the operating system's native look and feel (e.g., Windows/macOS/Linux
-        // style)
-        // Wrapped in try-catch because it can fail on some systems — we just ignore it
-        // if so
+        // Apply the operating system's native look and feel
+        // Wrapped in try-catch because it can fail on some systems
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
         }
 
-        // invokeLater() ensures the GUI is created on the Event Dispatch Thread (EDT)
-        // The EDT is the only thread that should create/update Swing components — this
-        // prevents
-        // race conditions and rendering bugs in multi-threaded environments
+        // invokeLater ensures the GUI is created on the Event Dispatch Thread
+        // This prevents race conditions and rendering bugs
         // Call::new is shorthand for () -> new Call()
         SwingUtilities.invokeLater(Call::new);
     }
