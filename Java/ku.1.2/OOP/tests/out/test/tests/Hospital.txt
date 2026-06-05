@@ -1,0 +1,6 @@
+A hospital uses the following criteria whether or ot to admit a patient
+1. If the temperature is above 38 degrees celsius and the pressure is above 140; admit the patient
+Else if the pressure is less than 140 just give medication
+If temperature is below 38 degrees celsius? And pressure is above 140 send the patient to the lab
+
+Write a java program that can develop to make this decision

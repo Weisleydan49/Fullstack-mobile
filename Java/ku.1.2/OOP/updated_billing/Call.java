@@ -397,66 +397,45 @@ public class Call extends JFrame implements ActionListener {
         return rate * durationMinutes; // Total = rate per minute × number of minutes
     }
 
-    /**
-     * Appends a new row to the history JTable using the data from a CallRecord.
-     * Each cell value is formatted to be human-readable.
-     */
+
     private void addToHistoryTable(CallRecord record) {
-        // addRow takes an Object[] - each element maps to one column in order
         tableModel.addRow(new Object[] {
-                record.getFormattedStart(), // "yyyy-MM-dd HH:mm:ss"
-                record.getFormattedDuration(), // "MM:SS"
-                record.getNetworkType(), // "Same Network (On-net)" etc.
-                record.getPhoneNumber(), // The number that was dialed
-                String.format("%.2f", record.getCharges()) // e.g., "14.50"
+                record.getFormattedStart(),
+                record.getFormattedDuration(),
+                record.getNetworkType(),
+                record.getPhoneNumber(),
+                String.format("%.2f", record.getCharges())
         });
     }
 
-    /**
-     * Resets only the per-call fields so the user can start a new call.
-     * Does NOT clear the history table or the charges label.
-     */
     private void resetForNewCall() {
         durationSeconds = 0;
         durationLabel.setText("Duration: 00:00");
-        phoneNumberField.setText(""); // Clear the phone number input
-        startCallBtn.setEnabled(false); // Must select a network again before starting
+        phoneNumberField.setText("");
+        startCallBtn.setEnabled(false);
         endCallBtn.setEnabled(false);
     }
 
-    /**
-     * Full application reset - wipes everything including call history.
-     * Called when the user clicks "Reset All".
-     */
     private void resetAll() {
         if (durationTimer != null)
-            durationTimer.stop(); // Stop any in-progress call timer first
-        resetForNewCall(); // Reset per-call state
-        callHistory.clear(); // Empty the in-memory list
-        tableModel.setRowCount(0); // Remove all rows from the JTable (setRowCount(0) = clear)
+            durationTimer.stop();
+        resetForNewCall();
+        callHistory.clear();
+        tableModel.setRowCount(0);
         chargesLabel.setText("Charges: KSH 0.00");
         statusLabel.setText("Status: Please select a network");
         statusLabel.setForeground(new Color(127, 140, 141));
-        selectNetworkBtn.setEnabled(true); // Allow picking a network again
-        networkSelected = false; // Reset the network selection flag
+        selectNetworkBtn.setEnabled(true);
+        networkSelected = false;
     }
 
-    // Inner Class: CallRecord
-    /**
-     * A simple data class that stores information about one completed call.
-     * Declared 'static' because it doesn't need access to the outer Call class's
-     * instance fields.
-     * All fields are 'final' because a call record should never change after
-     * creation.
-     */
     private static class CallRecord {
-        private final LocalDateTime startTime; // When the call began
-        private final int durationSeconds; // How long it lasted in total seconds
-        private final String networkType; // "Same Network (On-net)" or "Other Network (Off-net)"
-        private final double charges; // The calculated cost in KSH
-        private final String phoneNumber; // The number that was dialed
+        private final LocalDateTime startTime;
+        private final int durationSeconds;
+        private final String networkType;
+        private final double charges;
+        private final String phoneNumber;
 
-        // Constructor - all values are set once and cannot be changed (final)
         public CallRecord(LocalDateTime start, int dur, String net, double chg, String num) {
             this.startTime = start;
             this.durationSeconds = dur;
@@ -465,46 +444,35 @@ public class Call extends JFrame implements ActionListener {
             this.phoneNumber = num;
         }
 
-        // Returns the start time formatted as "yyyy-MM-dd HH:mm:ss" for the table
         public String getFormattedStart() {
             return startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         }
 
-        // Converts raw seconds into a "MM:SS" string for the Duration column
         public String getFormattedDuration() {
             int min = durationSeconds / 60;
             int sec = durationSeconds % 60;
             return String.format("%02d:%02d", min, sec);
         }
 
-        // Standard getter - returns the network type string
         public String getNetworkType() {
             return networkType;
         }
 
-        // Standard getter - returns the dialed phone number
         public String getPhoneNumber() {
             return phoneNumber;
         }
 
-        // Standard getter - returns the charge amount
         public double getCharges() {
             return charges;
         }
     }
 
-    // Entry Point
     public static void main(String[] args) {
-        // Apply the operating system's native look and feel
-        // Wrapped in try-catch because it can fail on some systems
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception ignored) {
         }
 
-        // invokeLater ensures the GUI is created on the Event Dispatch Thread
-        // This prevents race conditions and rendering bugs
-        // Call::new is shorthand for () -> new Call()
         SwingUtilities.invokeLater(Call::new);
     }
 }
